@@ -4,6 +4,7 @@ A feature-rich, modern, and highly polished 2048 puzzle game built with **Flutte
 
 ## ✨ Key Features
 
+- **Dark & Light Modes:** Play comfortably in any lighting with a built-in **Dark Mode** toggle.
 - **Dynamic Grid Sizes:** Play on multiple boards including **3x3, 4x4 (Classic), 5x5, 6x6, 7x7, and 8x8**.
 - **Separate High Scores:** Your **Best Score** is tracked individually for each grid size. Switch modes without losing your progress!
 - **Adaptive UI:** The game board and tile fonts automatically scale and adjust to provide the best visibility for any grid size.
@@ -11,12 +12,14 @@ A feature-rich, modern, and highly polished 2048 puzzle game built with **Flutte
 - **Dual Input Support:**
   - **Mobile:** Smooth swipe gestures with **Haptic Feedback**.
   - **Desktop:** Full support for **Keyboard Arrow Keys**.
-- **Modern Design:** Built with **Material 3**, featuring smooth scale animations, polished score boxes, and a classic 2048 color palette.
+- **Modern Design:** Built with **Material 3**, featuring smooth scale animations, polished score boxes, and adaptive color palettes for both light and dark themes.
 - **Settings Menu:** Easily switch between grid sizes mid-game or start a new challenge.
 
 ## 🎮 How to Play
 
-1. **Choose your Mode:** Tap the ⚙️ icon to select a grid size (e.g., 3x3 for a quick game or 8x8 for a long challenge).
+1. **Customize your Experience:** 
+   - Tap the ⚙️ icon to select a grid size.
+   - Tap the 🌓 icon to switch between **Dark and Light modes**.
 2. **Move Tiles:** Swipe or use Arrow Keys to slide all tiles in a direction.
 3. **Merge:** When two tiles with the same number collide, they merge into one!
 4. **Goal:** Reach the **2048** tile or aim for the highest score possible in your selected mode.
