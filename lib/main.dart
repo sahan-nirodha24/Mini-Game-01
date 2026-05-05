@@ -8,25 +8,49 @@ void main() {
   runApp(const Game2048App());
 }
 
-class Game2048App extends StatelessWidget {
+class Game2048App extends StatefulWidget {
   const Game2048App({super.key});
+
+  @override
+  State<Game2048App> createState() => _Game2048AppState();
+}
+
+class _Game2048AppState extends State<Game2048App> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '2048 Deluxe',
+      themeMode: _themeMode,
       theme: ThemeData(
+        brightness: Brightness.light,
         fontFamily: 'Roboto',
         useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xfffaf8ef),
       ),
-      home: const Game2048(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: 'Roboto',
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xff181a1b),
+      ),
+      home: Game2048(onThemeToggle: _toggleTheme, isDarkMode: _themeMode == ThemeMode.dark),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class Game2048 extends StatefulWidget {
-  const Game2048({super.key});
+  final VoidCallback onThemeToggle;
+  final bool isDarkMode;
+  const Game2048({super.key, required this.onThemeToggle, required this.isDarkMode});
 
   @override
   State<Game2048> createState() => _Game2048State();
@@ -229,6 +253,22 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
   }
 
   Color _getTileColor(int value) {
+    if (widget.isDarkMode) {
+      switch (value) {
+        case 2: return const Color(0xff3e4446);
+        case 4: return const Color(0xff4a5255);
+        case 8: return const Color(0xfff2b179);
+        case 16: return const Color(0xfff59563);
+        case 32: return const Color(0xfff67c5f);
+        case 64: return const Color(0xfff65e3b);
+        case 128: return const Color(0xffedcf72);
+        case 256: return const Color(0xffedcc61);
+        case 512: return const Color(0xffedc850);
+        case 1024: return const Color(0xffedc53f);
+        case 2048: return const Color(0xffedc22e);
+        default: return const Color(0xff2d3134);
+      }
+    }
     switch (value) {
       case 2: return const Color(0xffeee4da);
       case 4: return const Color(0xffeee1c9);
@@ -290,8 +330,11 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
     double size = screenWidth * 0.95; 
     if (size > 600) size = 600;
 
+    final Color primaryTextColor = widget.isDarkMode ? const Color(0xffe8e6e3) : const Color(0xff776e65);
+    final Color gridContainerColor = widget.isDarkMode ? const Color(0xff3e4446) : const Color(0xffbbada0);
+
     return Scaffold(
-      backgroundColor: const Color(0xfffaf8ef),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: KeyboardListener(
         focusNode: _focusNode,
         autofocus: true,
@@ -319,8 +362,8 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('2048', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xff776e65))),
-                        Text('${gridSize}x${gridSize} Mode', style: const TextStyle(fontSize: 18, color: Color(0xff776e65))),
+                        Text('2048', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: primaryTextColor)),
+                        Text('${gridSize}x${gridSize} Mode', style: TextStyle(fontSize: 18, color: primaryTextColor)),
                       ],
                     ),
                     Row(
@@ -363,7 +406,7 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                           height: size,
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: const Color(0xffbbada0),
+                            color: gridContainerColor,
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4)),
@@ -388,7 +431,7 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                           width: size,
                           height: size,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.7),
+                            color: widget.isDarkMode ? Colors.black.withOpacity(0.8) : Colors.white.withOpacity(0.7),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Column(
@@ -396,7 +439,7 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                             children: [
                               Text(
                                 isWon ? 'You Win!' : 'Game Over!',
-                                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xff776e65)),
+                                style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: primaryTextColor),
                               ),
                               const SizedBox(height: 20),
                               ElevatedButton(
@@ -430,12 +473,21 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
+                    IconButton.filled(
+                      onPressed: widget.onThemeToggle,
+                      icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+                      style: IconButton.styleFrom(
+                        backgroundColor: gridContainerColor,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
                     IconButton.filled(
                       onPressed: _showSettings,
                       icon: const Icon(Icons.settings),
                       style: IconButton.styleFrom(
-                        backgroundColor: const Color(0xffbbada0),
+                        backgroundColor: gridContainerColor,
                         foregroundColor: Colors.white,
                       ),
                     ),
@@ -450,11 +502,12 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
   }
 
   Widget _buildScoreBox(String label, int value) {
+    final Color gridContainerColor = widget.isDarkMode ? const Color(0xff3e4446) : const Color(0xffbbada0);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10), // Increased padding
       constraints: const BoxConstraints(minWidth: 80), // Added minimum width for balance
       decoration: BoxDecoration(
-        color: const Color(0xffbbada0),
+        color: gridContainerColor,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
@@ -492,7 +545,7 @@ class _Game2048State extends State<Game2048> with TickerProviderStateMixin {
                 style: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.bold,
-                  color: value <= 4 ? const Color(0xff776e65) : Colors.white,
+                  color: value <= 4 && !widget.isDarkMode ? const Color(0xff776e65) : Colors.white,
                 ),
               ),
             ),
