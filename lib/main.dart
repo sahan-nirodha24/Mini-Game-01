@@ -27,7 +27,7 @@ class _Game2048AppState extends State<Game2048App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '2048 Deluxe',
+      title: '2048',
       themeMode: _themeMode,
       theme: ThemeData(
         brightness: Brightness.light,

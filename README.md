@@ -1,6 +1,6 @@
-# 2048 Deluxe - Multi-Grid Edition 🎮
+# 2048 🎮
 
-A feature-rich, modern, and highly polished 2048 puzzle game built with **Flutter**. This "Deluxe" version offers multiple game modes, adaptive UI, and a seamless experience across mobile and desktop platforms.
+A feature-rich, modern, and highly polished 2048 puzzle game built with **Flutter**. This version offers multiple game modes, adaptive UI, and a seamless experience across mobile and desktop platforms.
 
 ## ✨ Key Features
 
